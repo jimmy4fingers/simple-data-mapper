@@ -1,0 +1,15 @@
+{
+    "name": "jimmy4fingers/simple-data-mapper",
+    "require": {
+        "php": ">=7"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^4.3"
+    },
+    "autoload":{
+        "psr-4":{
+            "App\\": "app/",
+            "": "src/"
+        }
+    }
+}
