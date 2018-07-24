@@ -1,9 +1,17 @@
 <?php
 
+namespace DataMapper;
+
+use DataMapper\Interfaces\MapCollectionInterface;
+use DataMapper\Interfaces\MapInterface;
+
 class MapCollection implements MapCollectionInterface
 {
     private $collection;
 
+    /**
+     * @return array
+     */
     public function get()
     {
         return $this->collection;

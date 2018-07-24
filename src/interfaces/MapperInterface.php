@@ -6,6 +6,8 @@
  * Time: 10:39
  */
 
+namespace DataMapper\Interfaces;
+
 interface MapperInterface
 {
     /**

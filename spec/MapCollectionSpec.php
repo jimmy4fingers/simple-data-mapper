@@ -1,8 +1,10 @@
 <?php
 
-namespace spec;
+namespace spec\DataMapper;
 
-use MapCollection;
+use DataMapper\MapCollection;
+use DataMapper\Interfaces\MapInterface;
+
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -13,19 +15,18 @@ class MapCollectionSpec extends ObjectBehavior
         $this->shouldHaveType(MapCollection::class);
     }
 
-    function it_sets(\MapInterface $map)
+    function it_sets(MapInterface $map)
     {
         // mock MapInterface
         $map->getKey()->willReturn('my-key');
         $map->set('my-key','my-lookup')->willReturn(
             $map->getWrappedObject()
-
         );
 
         $this->add($map);
     }
 
-    function it_gets(\MapInterface $map)
+    function it_gets(MapInterface $map)
     {
         // mock MapInterface
         $map->getKey()->willReturn('my-key');

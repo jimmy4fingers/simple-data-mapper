@@ -6,6 +6,8 @@
  * Time: 10:33
  */
 
+namespace DataMapper\Interfaces;
+
 interface MapCollectionInterface
 {
     public function get();

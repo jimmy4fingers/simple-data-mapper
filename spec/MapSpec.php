@@ -1,8 +1,8 @@
 <?php
 
-namespace spec;
+namespace spec\DataMapper;
 
-use map;
+use DataMapper\Map;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -20,7 +20,7 @@ class MapSpec extends ObjectBehavior
 
     function it_sets_key_and_lookup()
     {
-        $this->set('key','lookup')->shouldReturnAnInstanceOf('Map');
+        $this->set('key','lookup')->shouldReturnAnInstanceOf('\DataMapper\Map');
     }
 
     function it_gets_map_array()
@@ -79,7 +79,7 @@ class MapSpec extends ObjectBehavior
             ]
         ];
 
-        $this->setOnLoad('on load function')->shouldReturnAnInstanceOf('Map');
+        $this->setOnLoad('on load function')->shouldReturnAnInstanceOf('\DataMapper\Map');
         $this->get()->shouldReturn($array);
     }
 
@@ -99,7 +99,7 @@ class MapSpec extends ObjectBehavior
             ]
         ];
 
-        $this->setOnSet('on set function')->shouldReturnAnInstanceOf('Map');
+        $this->setOnSet('on set function')->shouldReturnAnInstanceOf('\DataMapper\Map');
         $this->get()->shouldReturn($array);
     }
 
@@ -119,7 +119,7 @@ class MapSpec extends ObjectBehavior
             ]
         ];
 
-        $this->setFormControl('form object')->shouldReturnAnInstanceOf('Map');
+        $this->setFormControl('form object')->shouldReturnAnInstanceOf('\DataMapper\Map');
         $this->get()->shouldReturn($array);
     }
 
@@ -139,7 +139,7 @@ class MapSpec extends ObjectBehavior
             ]
         ];
 
-        $this->setValidationRules('required|type')->shouldReturnAnInstanceOf('Map');
+        $this->setValidationRules('required|type')->shouldReturnAnInstanceOf('\DataMapper\Map');
         $this->get()->shouldReturn($array);
     }
 

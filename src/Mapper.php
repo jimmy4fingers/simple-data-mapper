@@ -1,5 +1,10 @@
 <?php
 
+namespace DataMapper;
+
+use DataMapper\Interfaces\MapperInterface;
+use DataMapper\Interfaces\MapCollectionInterface;
+
 /**
  * Class Mapper
  */
@@ -13,12 +18,12 @@ class Mapper implements MapperInterface
      * gets full array map
      *
      * @return mixed
-     * @throws Exception
+     * @throws \Exception
      */
     public function get()
     {
         if (empty($this->mapping))
-            throw new Exception('Cannot call get before setting mappings via "load" or "set"');
+            throw new \Exception('Cannot call get before setting mappings via "load" or "set"');
 
         return $this->mapping;
     }
@@ -66,12 +71,12 @@ class Mapper implements MapperInterface
     /**
      * get mapping by [key => data]
      *
-     * @return mixed
+     * @return array|mixed
      */
     public function getWithData()
     {
         if (empty($this->mapping))
-            throw new LogicException('Cannot call getWithData before set.');
+            throw new \LogicException('Cannot call getWithData before set.');
 
         foreach ($this->mapping as $key => $value) {
             $mapWithData[$key] = $value->getData();

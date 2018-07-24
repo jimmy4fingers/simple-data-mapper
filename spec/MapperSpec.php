@@ -1,12 +1,12 @@
 <?php
 
-namespace spec;
+namespace spec\DataMapper;
 
-use Mapper;
+use DataMapper\Mapper;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use MapCollection;
-use Map;
+use DataMapper\MapCollection;
+use DataMapper\Map;
 
 class MapperSpec extends ObjectBehavior
 {

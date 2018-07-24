@@ -1,5 +1,9 @@
 <?php
 
+namespace DataMapper;
+
+use DataMapper\Interfaces\MapInterface;
+
 /**
  * Class Map
  *
