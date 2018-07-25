@@ -12,7 +12,7 @@ class Map implements MapInterface
     private $onMapByLookup = '';
     private $onMap = '';
     private $formControl = '';
-    private $validationRules = '';
+    private $validation = '';
 
     public function set($key, $lookup)
     {
@@ -57,9 +57,9 @@ class Map implements MapInterface
         return $this;
     }
 
-    public function setValidation($validationRules)
+    public function setValidation($validation)
     {
-        $this->validationRules = $validationRules;
+        $this->validation = $validation;
         return $this;
     }
 
@@ -95,6 +95,6 @@ class Map implements MapInterface
 
     public function getValidation()
     {
-        return $this->validationRules;
+        return $this->validation;
     }
 }

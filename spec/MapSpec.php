@@ -47,7 +47,7 @@ class MapSpec extends ObjectBehavior
         $this->getFormControl()->shouldReturn('form object');
     }
 
-    function it_sets_validationRules()
+    function it_sets_validation()
     {
         $this->setValidation('required|type')->shouldReturnAnInstanceOf('\DataMapper\Map');
         $this->getValidation()->shouldReturn('required|type');
@@ -55,20 +55,6 @@ class MapSpec extends ObjectBehavior
 
     function it_daisy_chains()
     {
-        $array = [
-            'key' => 'my-key',
-            'lookup' => 'my-lookup',
-            'data' => 'my-data',
-            'attributes' => [
-                'triggers' => [
-                    'onMapByLookup' => 'my-onload',
-                    'onMap' => 'my-onset'
-                ],
-                'form_control' => 'my-form',
-                'validation_rules' => 'my-validation'
-            ]
-        ];
-
         $this->setKey('my-key');
         $this->setLookup('my-lookup');
 

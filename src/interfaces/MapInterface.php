@@ -17,7 +17,7 @@ interface MapInterface
     public function setOnMapByLookup($onLoad);
     public function setOnMap($onSet);
     public function setFormControl($formControl);
-    public function setValidation($validationRules);
+    public function setValidation($validation);
     public function getKey();
     public function getLookup();
     public function getData();

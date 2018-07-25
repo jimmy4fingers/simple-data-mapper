@@ -80,3 +80,83 @@ $mapper->set($collection, $data, true);
 $name = $mapper->get('my-form-field-name')->getData();
 // $name = 'jimmy';
 ```
+## Additional functionality
+Hooks:
+
+You can pass anonymous functions to be triggered when data is loaded in via Mapper::set. The anonymous must accept a parameter of data and also return it.
+- setOnMap() - triggered when mapping data via key
+- setOnMapByLookup() - triggered when setting data via lookup key
+ 
+```php
+<?php
+use DataMapper\Map;
+use DataMapper\MapCollection;
+use DataMapper\Mapper;
+
+$map = new Map();
+$collection = new MapCollection();
+$mapper = new Mapper();
+
+$ucwordsCallback = function ($data) {
+    return ucwords($data);
+};
+
+$maps = [
+    $map->set('first-name','first_names')->setOnMap($ucwordsCallback),
+    $map->set('last-name','last_name')->setOnMap($ucwordsCallback),
+    $map->set('email','email_address'),
+    $map->set('address_line1','line_1'),
+    $map->set('address_line1','line_2'),
+    $map->set('address_line1','line_3')
+];
+foreach($maps as $map) {
+    $collection->add($map);
+}
+
+// posted data example
+$postData = [
+    'first-name' => 'jimmy jams',
+    'last-name' => 'higgins',
+];
+
+$mapper->set($collection, $postData);
+
+$myData = $mapper->getArray();
+// $myData = ['first-name' => 'Jimmy James' etc...];
+```
+
+### Extend
+
+The Map object can set a couple more values that you can use to extend the functionality.
+
+- setValidation()
+- setFormObject()
+
+E.g.
+```php
+<?php
+use DataMapper\Map;
+use DataMapper\MapCollection;
+use DataMapper\Mapper;
+
+$map = new Map();
+$collection = new MapCollection();
+$mapper = new Mapper();
+
+$maps = [
+    $map->set('first-name','first_names')->setValidation('required'),
+    $map->set('last-name','last_name')->setValidation('required'),
+    $map->set('email','email_address')->setValidation('required|email'),
+];
+foreach($maps as $map) {
+    $collection->add($map);
+}
+
+$mapper->set($collection, ['first-name'=>'bob', 'last-name'=>'']);
+
+$validation = new ValidationObject();
+$validation->validateMapped($mapper->get()); // Mapper::get returns MapInterface[]
+if ($validation->isValid()) {
+    //...
+}
+```
