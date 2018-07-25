@@ -23,124 +23,34 @@ class MapSpec extends ObjectBehavior
         $this->set('key','lookup')->shouldReturnAnInstanceOf('\DataMapper\Map');
     }
 
-    function it_gets_map_array()
-    {
-        $array = [
-            'key' => '',
-            'lookup' => '',
-            'data' => '',
-            'attributes' => [
-                'triggers' => [
-                    'onLoad' => '',
-                    'onSet' => ''
-                ],
-                'form_control' => '',
-                'validation_rules' => ''
-            ]
-        ];
-
-        $this->get()->shouldReturn($array);
-    }
-
     function it_sets_data()
     {
-        $array = [
-            'key' => '',
-            'lookup' => '',
-            'data' => 'my-data',
-            'attributes' => [
-                'triggers' => [
-                    'onLoad' => '',
-                    'onSet' => ''
-                ],
-                'form_control' => '',
-                'validation_rules' => ''
-            ]
-        ];
-
-
         $this->setData('my-data');
-        $this->get()->shouldReturn($array);
+        $this->getData()->shouldReturn('my-data');
     }
 
     function it_sets_onLoad()
     {
-        $array = [
-            'key' => '',
-            'lookup' => '',
-            'data' => '',
-            'attributes' => [
-                'triggers' => [
-                    'onLoad' => 'on load function',
-                    'onSet' => ''
-                ],
-                'form_control' => '',
-                'validation_rules' => ''
-            ]
-        ];
-
-        $this->setOnLoad('on load function')->shouldReturnAnInstanceOf('\DataMapper\Map');
-        $this->get()->shouldReturn($array);
+        $this->setOnMapByLookup('on load function')->shouldReturnAnInstanceOf('\DataMapper\Map');
+        $this->getOnMapByLookup()->shouldReturn('on load function');
     }
 
     function it_sets_onSet()
     {
-        $array = [
-            'key' => '',
-            'lookup' => '',
-            'data' => '',
-            'attributes' => [
-                'triggers' => [
-                    'onLoad' => '',
-                    'onSet' => 'on set function'
-                ],
-                'form_control' => '',
-                'validation_rules' => ''
-            ]
-        ];
-
-        $this->setOnSet('on set function')->shouldReturnAnInstanceOf('\DataMapper\Map');
-        $this->get()->shouldReturn($array);
+        $this->setOnMap('on set function')->shouldReturnAnInstanceOf('\DataMapper\Map');
+        $this->getOnMap()->shouldReturn('on set function');
     }
 
     function it_sets_formControl()
     {
-        $array = [
-            'key' => '',
-            'lookup' => '',
-            'data' => '',
-            'attributes' => [
-                'triggers' => [
-                    'onLoad' => '',
-                    'onSet' => ''
-                ],
-                'form_control' => 'form object',
-                'validation_rules' => ''
-            ]
-        ];
-
         $this->setFormControl('form object')->shouldReturnAnInstanceOf('\DataMapper\Map');
-        $this->get()->shouldReturn($array);
+        $this->getFormControl()->shouldReturn('form object');
     }
 
     function it_sets_validationRules()
     {
-        $array = [
-            'key' => '',
-            'lookup' => '',
-            'data' => '',
-            'attributes' => [
-                'triggers' => [
-                    'onLoad' => '',
-                    'onSet' => ''
-                ],
-                'form_control' => '',
-                'validation_rules' => 'required|type'
-            ]
-        ];
-
-        $this->setValidationRules('required|type')->shouldReturnAnInstanceOf('\DataMapper\Map');
-        $this->get()->shouldReturn($array);
+        $this->setValidation('required|type')->shouldReturnAnInstanceOf('\DataMapper\Map');
+        $this->getValidation()->shouldReturn('required|type');
     }
 
     function it_daisy_chains()
@@ -151,8 +61,8 @@ class MapSpec extends ObjectBehavior
             'data' => 'my-data',
             'attributes' => [
                 'triggers' => [
-                    'onLoad' => 'my-onload',
-                    'onSet' => 'my-onset'
+                    'onMapByLookup' => 'my-onload',
+                    'onMap' => 'my-onset'
                 ],
                 'form_control' => 'my-form',
                 'validation_rules' => 'my-validation'
@@ -164,12 +74,16 @@ class MapSpec extends ObjectBehavior
 
         $this
             ->setData('my-data')
-            ->setOnLoad('my-onload')
-            ->setOnSet('my-onset')
+            ->setOnMapByLookup('my-onload')
+            ->setOnMap('my-onset')
             ->setFormControl('my-form')
-            ->setValidationRules('my-validation');
+            ->setValidation('my-validation');
 
-        $this->get()->shouldReturn($array);
+        $this->getData()->shouldReturn('my-data');
+        $this->getOnMapByLookup()->shouldReturn('my-onload');
+        $this->getOnMap()->shouldReturn('my-onset');
+        $this->getFormControl()->shouldReturn('my-form');
+        $this->getValidation()->shouldReturn('my-validation');
     }
 
     function it_should_get_key()

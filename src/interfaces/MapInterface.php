@@ -10,25 +10,19 @@ namespace DataMapper\Interfaces;
 
 interface MapInterface
 {
-    /**
-     * @param $key
-     * @param $lookup
-     * @return MapInterface
-     */
     public function set($key, $lookup);
     public function setKey($key);
     public function setLookup($lookup);
     public function setData($data);
-    public function setOnLoad($onLoad);
-    public function setOnSet($onSet);
+    public function setOnMapByLookup($onLoad);
+    public function setOnMap($onSet);
     public function setFormControl($formControl);
-    public function setValidationRules($validationRules);
+    public function setValidation($validationRules);
     public function getKey();
-    public function get();
     public function getLookup();
     public function getData();
-    public function getOnLoad();
-    public function getOnSet();
+    public function getOnMapByLookup();
+    public function getOnMap();
     public function getFormControl();
-    public function getValidationRules();
+    public function getValidation();
 }

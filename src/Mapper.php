@@ -2,137 +2,114 @@
 
 namespace DataMapper;
 
+use DataMapper\Interfaces\MapInterface;
 use DataMapper\Interfaces\MapperInterface;
 use DataMapper\Interfaces\MapCollectionInterface;
 
-/**
- * Class Mapper
- */
 class Mapper implements MapperInterface
 {
-    private $mapperObj;
+    /** @var MapCollectionInterface */
+    private $mapCollection;
+    /** @var MapInterface[] */
     private $mapping;
+    /** @var array */
     private $lookup;
 
     /**
-     * gets full array map
-     *
-     * @return mixed
+     * @param $key
+     * @return MapInterface[]|MapInterface
      * @throws \Exception
      */
-    public function get()
+    public function get($key = null)
     {
-        if (empty($this->mapping))
-            throw new \Exception('Cannot call get before setting mappings via "load" or "set"');
+        if (empty($this->mapping)) {
+            throw new \Exception('A MapCollectionInterface must be set before calling this method.');
+        }
+
+        if (!is_null($key) && array_key_exists($key, $this->mapping)) {
+            return $this->mapping[$key];
+        }
 
         return $this->mapping;
     }
 
     /**
-     * get data by key
+     * returns ['mapping key' => data] or ['lookup key' => data] if $lookupAsKey = true
      *
-     * @param $key
-     * @return mixed
+     * @param bool $lookupAsKey
+     * @return array
+     * @throws \Exception
      */
-    public function getData($key)
+    public function getArray($lookupAsKey = false)
     {
-        if (array_key_exists($key, $this->mapping))
-            return $this->mapping[$key]->getData();
-    }
-
-    /**
-     * load data into $mappings
-     *
-     * @param MapCollectionInterface $mappings
-     *
-     * @param $data
-     */
-    public function setDataByLookupKey(MapCollectionInterface $mappings, $data)
-    {
-        $this->mapperObj = $mappings;
-        $this->mapping = $mappings->get();
-        $this->setLookup();
-        $this->setLoadData($data);
-    }
-
-    /**
-     * set data into $mappings
-     *
-     * @param MapCollectionInterface $mappings
-     * @param $data
-     */
-    public function setDataByKey(MapCollectionInterface $mappings, $data)
-    {
-        $this->mapperObj = $mappings;
-        $this->mapping = $mappings->get();
-        $this->setData($data);
-    }
-
-    /**
-     * get mapping by [key => data]
-     *
-     * @return array|mixed
-     */
-    public function getWithData()
-    {
-        if (empty($this->mapping))
-            throw new \LogicException('Cannot call getWithData before set.');
-
-        foreach ($this->mapping as $key => $value) {
-            $mapWithData[$key] = $value->getData();
+        if (empty($this->mapping)) {
+            throw new \Exception('A MapCollectionInterface must be set before calling this method.');
         }
 
-        return $mapWithData;
+        $dataMap = [];
+        foreach ($this->mapping as $key => $value) {
+            if ($lookupAsKey) {
+                $dataMap[$value->getLookup()] = $value->getData();
+            } else {
+                $dataMap[$key] = $value->getData();
+            }
+        }
+
+        return $dataMap;
     }
 
     /**
-     * loading data from D3
+     * set MapCollection and map $data to it
      *
-     * @param array $keyValueData ['lookup' => value]
+     * @param MapCollectionInterface $collection
+     * @param array $data
+     * @param bool $mapWithLookupKey
      */
-    private function setLoadData(array $keyValueData)
+    public function set(MapCollectionInterface $collection, array $data, $mapWithLookupKey = false)
     {
-        foreach ($keyValueData as $key => $value) {
-            // if lookup key exists, set the data
+        $this->mapCollection = $collection;
+        $this->mapping = $collection->get();
+        $this->setLookup();
+
+        if ($mapWithLookupKey) {
+            $this->mapDataByLookupKey($data);
+        } else {
+            $this->mapDataByKey($data);
+        }
+    }
+
+    private function mapDataByLookupKey(array $data)
+    {
+        foreach ($data as $key => $value) {
             if (array_key_exists($key, $this->lookup)) {
-
-                $this->mapping[$this->lookup[$key]]->setData($value);
-                $onLoad = $this->mapping[$this->lookup[$key]]->getOnLoad();
-
+                $onLoad = $this->mapping[$this->lookup[$key]]->getOnMapByLookup();
                 if (is_callable($onLoad)) {
                     $this->mapping[$this->lookup[$key]]->setData(
-                        $this->onLoadHandler($onLoad, $value)
+                        $this->onMapDataLookupHandler($onLoad, $value)
                     );
+                } else {
+                    $this->mapping[$this->lookup[$key]]->setData($value);
                 }
             }
         }
     }
 
-    /**
-     * setting data from a form
-     *
-     * @param array $keyValueData ['key' => value]
-     */
-    private function setData(array $keyValueData)
+    private function mapDataByKey(array $data)
     {
-        foreach ($keyValueData as $key => $data) {
-            // if key exists set the data
+        foreach ($data as $key => $value) {
             if (array_key_exists($key, $this->mapping)) {
-                $this->mapping[$key]->setData($data);
-
-                $onSet = $this->mapping[$key]->getOnSet();
+                $onSet = $this->mapping[$key]->getOnMap();
                 if (is_callable($onSet)) {
                     $this->mapping[$key]->setData(
-                        $this->onSetHandler($onSet, $data)
+                        $this->onMapDataHandler($onSet, $value)
                     );
+                } else {
+                    $this->mapping[$key]->setData($value);
                 }
             }
         }
     }
 
-    /**
-     * sets a look up array
-     */
     private function setLookup()
     {
         foreach ($this->mapping as $map) {
@@ -140,12 +117,12 @@ class Mapper implements MapperInterface
         }
     }
 
-    private function onSetHandler($onSet, $data)
+    private function onMapDataHandler($onSet, $data)
     {
         return $onSet($data);
     }
 
-    private function onLoadHandler($onLoad, $data)
+    private function onMapDataLookupHandler($onLoad, $data)
     {
         return $onLoad($data);
     }

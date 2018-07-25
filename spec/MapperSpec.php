@@ -10,30 +10,6 @@ use DataMapper\Map;
 
 class MapperSpec extends ObjectBehavior
 {
-    /**
-     * Implementation:
-     *
-     * //////////////// load ////////////////////
-     * $d3Data = array returned from D3
-     * $mappings = new MapCollection();
-     *
-     * $mapper = new Mapper();
-     * $mapper->load($mappings, $d3Data);
-     * $mappedData = $mapper->get();
-     *
-     * //////////////// set ////////////////////
-     * $formData = array post from GUI forms
-     * $mappings = new MapCollection();
-     *
-     * $mapper = new Mapper();
-     * $mapper->set($mappings, $formData);
-     * $validationObj = $mapper->validate(validationObj)
-     * $d3readyData = $mapper->get();
-     *
-     *
-     * //// Additional functionality, build form elements using mapped data
-     * $riskFormElements = new FormElementsMapper($mappedData);*
-     */
     function it_is_initializable()
     {
         $this->shouldHaveType(Mapper::class);
@@ -60,7 +36,7 @@ class MapperSpec extends ObjectBehavior
             'pl.own.plant' => 'test-data'
         ];
 
-        $this->setDataByLookupKey($mappings, $testData);
+        $this->set($mappings, $testData, true);
     }
 
     function it_gets_data()
@@ -100,7 +76,7 @@ class MapperSpec extends ObjectBehavior
             'sumsGoodsInTransitCover' => $map6
         ];
 
-        $this->setDataByLookupKey($mappings, $testData);
+        $this->set($mappings, $testData, true);
         $this->get()->shouldReturn($expected);
     }
 
@@ -141,7 +117,7 @@ class MapperSpec extends ObjectBehavior
             'sumsGoodsInTransitCover' => $map6
         ];
 
-        $this->setDataByKey($mappings, $testData);
+        $this->set($mappings, $testData);
         $this->get()->shouldReturn($expected);
     }
 
@@ -151,8 +127,8 @@ class MapperSpec extends ObjectBehavior
         $mappings = new MapCollection();
         $mappings->add($map->set('hiredPlantCover','pl.hired.plant.cover'));
 
-        $this->setDataByLookupKey($mappings, ['pl.hired.plant.cover' => 'abcdefg']);
-        $this->getData('hiredPlantCover')->shouldReturn('abcdefg');
+        $this->set($mappings, ['pl.hired.plant.cover' => 'abcdefg'],true);
+        $this->get('hiredPlantCover')->getData()->shouldReturn('abcdefg');
     }
 
     function it_uses_callable_trigger_in_set_mapping()
@@ -164,10 +140,10 @@ class MapperSpec extends ObjectBehavior
 
         $map = new Map();
         $mappings = new MapCollection();
-        $mappings->add($map->set('trigger_onset_test','pl.hired.plant.cover')->setOnSet($uppercaseStringFunc));
+        $mappings->add($map->set('trigger_onset_test','pl.hired.plant.cover')->setOnMap($uppercaseStringFunc));
 
-        $this->setDataByKey($mappings, ['trigger_onset_test' => 'abcdefg']);
-        $this->getData('trigger_onset_test')->shouldReturn('ABCDEFG');
+        $this->set($mappings, ['trigger_onset_test' => 'abcdefg']);
+        $this->get('trigger_onset_test')->getData()->shouldReturn('ABCDEFG');
     }
 
     function it_users_callable_trigger_in_load_mapping()
@@ -178,10 +154,10 @@ class MapperSpec extends ObjectBehavior
         };
         $map = new Map();
         $mappings = new MapCollection();
-        $mappings->add($map->set('trigger_load_test','pl.hired.plant.cover')->setOnLoad($explodeStringFunc));
+        $mappings->add($map->set('trigger_load_test','pl.hired.plant.cover')->setOnMapByLookup($explodeStringFunc));
 
-        $this->setDataByLookupKey($mappings, ['pl.hired.plant.cover' => 'a b c']);
-        $this->getData('trigger_load_test')->shouldReturn(['a','b','c']);
+        $this->set($mappings, ['pl.hired.plant.cover' => 'a b c'],true);
+        $this->get('trigger_load_test')->getData()->shouldReturn(['a','b','c']);
     }
 
     function it_gets_with_data()
@@ -212,7 +188,7 @@ class MapperSpec extends ObjectBehavior
             'sumsGoodsInTransitCover' => '####',
         ];
 
-        $this->setDataByKey($mappings, $dataToLoad);
-        $this->getWithData()->shouldReturn($dataToLoad);
+        $this->set($mappings, $dataToLoad);
+        $this->getArray()->shouldReturn($dataToLoad);
     }
 }

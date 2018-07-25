@@ -4,19 +4,13 @@ namespace DataMapper;
 
 use DataMapper\Interfaces\MapInterface;
 
-/**
- * Class Map
- *
- * simple array class
- *
- */
 class Map implements MapInterface
 {
     private $key = '';
     private $lookup = '';
     private $data = '';
-    private $onLoad = '';
-    private $onSet = '';
+    private $onMapByLookup = '';
+    private $onMap = '';
     private $formControl = '';
     private $validationRules = '';
 
@@ -45,15 +39,15 @@ class Map implements MapInterface
         return $this;
     }
 
-    public function setOnLoad($onLoad)
+    public function setOnMapByLookup($onMapByLookup)
     {
-        $this->onLoad = $onLoad;
+        $this->onMapByLookup = $onMapByLookup;
         return $this;
     }
 
-    public function setOnSet($onSet)
+    public function setOnMap($onMap)
     {
-        $this->onSet = $onSet;
+        $this->onMap = $onMap;
         return $this;
     }
 
@@ -63,7 +57,7 @@ class Map implements MapInterface
         return $this;
     }
 
-    public function setValidationRules($validationRules)
+    public function setValidation($validationRules)
     {
         $this->validationRules = $validationRules;
         return $this;
@@ -74,67 +68,32 @@ class Map implements MapInterface
         return $this->key;
     }
 
-    public function get()
-    {
-        return [
-            'key' => $this->key,
-            'lookup' => $this->lookup,
-            'data' => $this->data,
-            'attributes' => [
-                'triggers' => [
-                    'onLoad' => $this->onLoad,
-                    'onSet' => $this->onSet
-                ],
-                'form_control' => $this->formControl,
-                'validation_rules' => $this->validationRules
-            ]
-        ];
-    }
-
-    /**
-     * @return string
-     */
     public function getLookup()
     {
         return $this->lookup;
     }
 
-    /**
-     * @return string
-     */
     public function getData()
     {
         return $this->data;
     }
 
-    /**
-     * @return string
-     */
-    public function getOnLoad()
+    public function getOnMapByLookup()
     {
-        return $this->onLoad;
+        return $this->onMapByLookup;
     }
 
-    /**
-     * @return string
-     */
-    public function getOnSet()
+    public function getOnMap()
     {
-        return $this->onSet;
+        return $this->onMap;
     }
 
-    /**
-     * @return string
-     */
     public function getFormControl()
     {
         return $this->formControl;
     }
 
-    /**
-     * @return string
-     */
-    public function getValidationRules()
+    public function getValidation()
     {
         return $this->validationRules;
     }

@@ -7,10 +7,11 @@ use DataMapper\Interfaces\MapInterface;
 
 class MapCollection implements MapCollectionInterface
 {
+    /** @var MapInterface[] */
     private $collection;
 
     /**
-     * @return array
+     * @return MapInterface[]
      */
     public function get()
     {
