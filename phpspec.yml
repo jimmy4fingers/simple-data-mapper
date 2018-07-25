@@ -1,4 +1,4 @@
 suites:
-    acme_suite:
+    mapper_suite:
         namespace: DataMapper
         psr4_prefix: DataMapper
