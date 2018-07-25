@@ -1,0 +1,16 @@
+language: php
+php:
+  - 7.1.9
+
+before_script:
+ - composer self-update
+ - composer install --prefer-source --no-interaction --dev
+
+# Cache composer packages so "composer install" is faster
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+# Run script
+script:
+ - ./vendor/bin/phpspec run

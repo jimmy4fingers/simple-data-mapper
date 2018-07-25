@@ -1,6 +1,0 @@
-machine:
-  php:
-    version: 7.1
-test:
-  override:
-    - ./vendor/bin/phpspec run
