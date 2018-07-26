@@ -1,19 +1,13 @@
 {
     "name": "jimmy4fingers/simple-data-mapper",
     "require": {
-        "php": ">=7"
-    },
-    "minimum-stability": "stable",
-    "require-dev": {
+        "php": ">=7",
         "phpspec/phpspec": "^4.3"
     },
+    "minimum-stability": "stable",
     "autoload":{
         "psr-4":{
-            "DataMapper\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
+            "DataMapper\\": "src/",
             "spec\\DataMapper\\": "spec/"
         }
     }

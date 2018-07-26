@@ -4,7 +4,7 @@ php:
 
 before_script:
  - composer self-update
- - composer install --prefer-source --no-interaction --dev
+ - composer install --prefer-source --no-interaction
 
 # Cache composer packages so "composer install" is faster
 cache:
@@ -13,4 +13,5 @@ cache:
 
 # Run script
 script:
- - ./vendor/bin/phpspec run --config phpspec.travis.yml
+ - ./vendor/bin/phpspec -v
+ - ./vendor/bin/phpspec run --config phpspec.travis.yml -vvv
