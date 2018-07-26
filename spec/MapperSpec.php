@@ -191,4 +191,66 @@ class MapperSpec extends ObjectBehavior
         $this->set($mappings, $dataToLoad);
         $this->getArray()->shouldReturn($dataToLoad);
     }
+
+    function it_loads_data_from_diff_source()
+    {
+        $data = [
+            'my_key' => 'my data value',
+            'diff_source' => [0,1,2,3]
+        ];
+
+        $returns = [
+            'my_key' => [0,1,2,3]
+        ];
+
+        $map = new Map();
+        $mappings = new MapCollection();
+        $mappings->add($map->set('my_key','my_lookup_key')->setDataFrom('diff_source'));
+
+        $this->set($mappings, $data);
+        $this->getArray()->shouldReturn($returns);
+    }
+
+    function it_can_combine_onMap_with_setDataFrom()
+    {
+        $jsonData = json_encode(['data'=> ['key' => 'sub-data']]);
+
+        $data = [
+            'my_key' => 'my data value',
+            'diff_source' => $jsonData
+        ];
+
+        $returns = [
+            'my_key' => ['data'=> ['key' => 'sub-data']]
+        ];
+
+        $cb = function ($data) {
+            return json_decode($data,true);
+        };
+
+        $map = new Map();
+        $mappings = new MapCollection();
+        $mappings->add($map->set('my_key','my_lookup_key')->setDataFrom('diff_source')->setOnMap($cb));
+
+        $this->set($mappings, $data);
+        $this->getArray()->shouldReturn($returns);
+    }
+
+    function it_sets_data_from_when_key_missing()
+    {
+        $data = [
+            'diff_source' => [100]
+        ];
+
+        $returns = [
+            'my_key' => [100]
+        ];
+
+        $map = new Map();
+        $mappings = new MapCollection();
+        $mappings->add($map->set('my_key','my_lookup_key')->setDataFrom('diff_source'));
+
+        $this->set($mappings, $data);
+        $this->getArray()->shouldReturn($returns);
+    }
 }

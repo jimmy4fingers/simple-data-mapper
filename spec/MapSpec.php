@@ -83,4 +83,10 @@ class MapSpec extends ObjectBehavior
         $this->setLookup('my-lookup');
         $this->getLookup()->shouldReturn('my-lookup');
     }
+
+    function it_sets_data_from_source()
+    {
+        $this->setDataFrom('other-key-value');
+        $this->getDataFrom()->shouldReturn('other-key-value');
+    }
 }

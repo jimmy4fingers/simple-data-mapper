@@ -12,9 +12,10 @@ class Mapper implements MapperInterface
     private $mapCollection;
     /** @var MapInterface[] */
     private $mapping;
-    /** @var array */
+    /** @var array [lookup key => data] */
     private $lookup;
-
+    /** @var array keys */
+    private $dataFromKeys;
     /**
      * @param $key
      * @return MapInterface[]|MapInterface
@@ -70,6 +71,7 @@ class Mapper implements MapperInterface
         $this->mapCollection = $collection;
         $this->mapping = $collection->get();
         $this->setLookup();
+        $this->setDataFromKeys();
 
         if ($mapWithLookupKey) {
             $this->mapDataByLookupKey($data);
@@ -96,9 +98,20 @@ class Mapper implements MapperInterface
 
     private function mapDataByKey(array $data)
     {
+        if (!empty($this->dataFromKeys)) {
+            $data = array_merge($data, $this->dataFromKeys);
+        }
+
         foreach ($data as $key => $value) {
             if (array_key_exists($key, $this->mapping)) {
                 $onSet = $this->mapping[$key]->getOnMap();
+                // gets data from diff key=>value
+                $diffSourceKey = $this->mapping[$key]->getDataFrom();
+                if (!empty($diffSourceKey)) {
+                    if (array_key_exists($diffSourceKey, $data)) {
+                        $value = $data[$diffSourceKey];
+                    }
+                }
                 if (is_callable($onSet)) {
                     $this->mapping[$key]->setData(
                         $this->onMapDataHandler($onSet, $value)
@@ -106,6 +119,15 @@ class Mapper implements MapperInterface
                 } else {
                     $this->mapping[$key]->setData($value);
                 }
+            }
+        }
+    }
+
+    private function setDataFromKeys()
+    {
+        foreach ($this->mapping as $map) {
+            if (!empty($map->getDataFrom())) {
+                $this->dataFromKeys[$map->getKey()] = '';
             }
         }
     }
