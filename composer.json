@@ -8,7 +8,12 @@
     },
     "autoload":{
         "psr-4":{
-            "DataMapper\\": "src"
+            "DataMapper\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "spec\\DataMapper\\": "spec/"
         }
     }
 }
