@@ -3,6 +3,7 @@
     "require": {
         "php": ">=7"
     },
+    "minimum-stability": "stable",
     "require-dev": {
         "phpspec/phpspec": "^4.3"
     },

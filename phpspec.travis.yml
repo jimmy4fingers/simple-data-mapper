@@ -2,14 +2,7 @@ suites:
   default:
     namespace: DataMapper
     psr4_prefix: DataMapper
-    src_path: %paths.config%/src
-    spec_path: %paths.config%
+    src_path: /src
+    spec_path: /spec
 
 formatter.name: pretty
-
-code_coverage:
-  format: clover
-  output: build/coverage.xml
-
-extensions:
-  PhpSpecCodeCoverage\CodeCoverageExtension: ~
