@@ -191,4 +191,23 @@ class MapperSpec extends ObjectBehavior
         $this->set($mappings, $dataToLoad);
         $this->getArray()->shouldReturn($dataToLoad);
     }
+
+    function it_loads_data_from_diff_source()
+    {
+        $data = [
+            'my_key' => 'my data value',
+            'diff_source' => [0,1,2,3]
+        ];
+
+        $returns = [
+            'my_key' => [0,1,2,3]
+        ];
+
+        $map = new Map();
+        $mappings = new MapCollection();
+        $mappings->add($map->set('my_key','my_lookup_key')->setDataFrom('diff_source'));
+
+        $this->set($mappings, $data);
+        $this->getArray()->shouldReturn($returns);
+    }
 }

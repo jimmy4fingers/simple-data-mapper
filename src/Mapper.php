@@ -99,6 +99,13 @@ class Mapper implements MapperInterface
         foreach ($data as $key => $value) {
             if (array_key_exists($key, $this->mapping)) {
                 $onSet = $this->mapping[$key]->getOnMap();
+                // gets data from diff key=>value
+                $diffSourceKey = $this->mapping[$key]->getDataFrom();
+                if (!empty($diffSourceKey)) {
+                    if (array_key_exists($diffSourceKey, $data)) {
+                        $value = $data[$diffSourceKey];
+                    }
+                }
                 if (is_callable($onSet)) {
                     $this->mapping[$key]->setData(
                         $this->onMapDataHandler($onSet, $value)

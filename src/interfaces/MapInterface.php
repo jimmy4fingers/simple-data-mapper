@@ -18,6 +18,7 @@ interface MapInterface
     public function setOnMap($onSet);
     public function setFormControl($formControl);
     public function setValidation($validation);
+    public function setDataFrom($key);
     public function getKey();
     public function getLookup();
     public function getData();
@@ -25,4 +26,5 @@ interface MapInterface
     public function getOnMap();
     public function getFormControl();
     public function getValidation();
+    public function getDataFrom();
 }

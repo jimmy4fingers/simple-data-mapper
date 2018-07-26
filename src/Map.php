@@ -13,6 +13,7 @@ class Map implements MapInterface
     private $onMap = '';
     private $formControl = '';
     private $validation = '';
+    private $dataSource = '';
 
     public function set($key, $lookup)
     {
@@ -96,5 +97,16 @@ class Map implements MapInterface
     public function getValidation()
     {
         return $this->validation;
+    }
+
+    public function setDataFrom($key)
+    {
+        $this->dataSource = $key;
+        return $this;
+    }
+
+    public function getDataFrom()
+    {
+        return $this->dataSource;
     }
 }
