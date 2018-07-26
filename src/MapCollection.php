@@ -23,3 +23,4 @@ class MapCollection implements MapCollectionInterface
         $this->collection[$map->getKey()] = $map;
     }
 }
+
