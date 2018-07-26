@@ -2,7 +2,5 @@ suites:
   default:
     namespace: DataMapper
     psr4_prefix: DataMapper
-    src_path: /src
-    spec_path: /spec
 
 formatter.name: pretty
