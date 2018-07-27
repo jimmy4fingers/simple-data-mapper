@@ -55,7 +55,7 @@ $name = $mapper->get('my-form-field-name')->getData();
 // $name = 'jim';
 
 ``` 
-While the above seems trivial, let's try and reverse the process. We want to load some data and assign it to our application key or 'my-form-field-name'.
+While the above seems trivial, let's try and reverse the process. We want to load some data and assign it to our application key ('my-form-field-name').
 
 ```php
 <?php
@@ -81,12 +81,12 @@ $name = $mapper->get('my-form-field-name')->getData();
 // $name = 'jimmy';
 ```
 ## Additional functionality
-Hooks:
 
-You can pass anonymous functions to be triggered when data is loaded in via Mapper::set. The anonymous must accept a parameter of data and also return it.
+You can pass anonymous functions to be triggered when data is loaded in via Mapper::set. The anonymous function must accept a parameter of data and also return it.
 - setOnMap() - triggered when mapping data via key
 - setOnMapByLookup() - triggered when setting data via lookup key
- 
+
+E.g:
 ```php
 <?php
 use DataMapper\Map;
@@ -122,17 +122,61 @@ $postData = [
 $mapper->set($collection, $postData);
 
 $myData = $mapper->getArray();
-// $myData = ['first-name' => 'Jimmy James' etc...];
+// $myData = ['first-name' => 'Jimmy Jams' etc...];
 ```
+
+ - setDataFrom()
+ 
+ If the array of data you are mapping contains data you wish to set on a Map but is not referenced by a mapping key or lookup key, you can use the Map::setDataFrom($key).
+ 
+ E.g:
+ ```php
+ <?php
+ // data your mapping
+ $post = [
+     'jsonData' => ['city1', 'city2', 'city3']
+];
+ 
+ $map = new Map();
+ $collection = new MapCollection();
+ $mapper = new Mapper();
+ 
+ $cb1 = function ($data) {
+     $data = json_decode($data,true);
+     if (is_array($data) && array_key_exists(0,$data))
+        $data = $data[0];
+     return $data;
+ };
+ $cb2 = function ($data) {
+      $data = json_decode($data,true);
+      if (is_array($data) && array_key_exists(1,$data))
+         $data = $data[1];
+      return $data;
+  };
+  
+ $maps = [
+     $map->set('city1','city_1')->setDataFrom('jsonData')->setOnMap($cb1),
+     $map->set('city2','city_2')->setDataFrom('jsonData')->setOnMap($cb2)
+ ];
+ foreach($maps as $map) {
+     $collection->add($map);
+ }
+ 
+ $mapper->set($collection, $post);
+ 
+ $myData = $mapper->getArray();
+ // $myData = ['city1' => 'city1', 'city2' => 'city2']
+ 
+ ```
 
 ### Extend
 
-The Map object can set a couple more values that you can use to extend the functionality.
+The Map object can set a few more values that you can use to extend the functionality of Mapper::class.
 
 - setValidation()
 - setFormObject()
 
-E.g.
+E.g:
 ```php
 <?php
 use DataMapper\Map;
