@@ -1,4 +1,5 @@
 # Simple Data Mapper
+[![Build Status](https://travis-ci.org/jimmy4fingers/simple-data-mapper.svg?branch=master)](https://travis-ci.org/jimmy4fingers/simple-data-mapper)
 
 Collection of objects intended to cut down repetition of code when having to re-map arrays of data with another source (DB field's etc.)
 
