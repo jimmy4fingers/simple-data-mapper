@@ -1,5 +1,6 @@
 {
     "name": "jimmy4fingers/simple-data-mapper",
+    "description": "Data mapping class",
     "require": {
         "php": ">=7",
         "phpspec/phpspec": "^4.3"
@@ -7,8 +8,7 @@
     "minimum-stability": "stable",
     "autoload":{
         "psr-4":{
-            "DataMapper\\": "src/",
-            "spec\\DataMapper\\": "spec/"
+            "DataMapper\\": "src"
         }
     }
 }
