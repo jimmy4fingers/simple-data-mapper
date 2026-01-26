@@ -1,6 +1,14 @@
 # Simple Data Mapper
 [![Build Status](https://api.travis-ci.com/jimmy4fingers/simple-data-mapper.svg?branch=master)](https://travis-ci.com/jimmy4fingers/simple-data-mapper)
 
+A lightweight PHP package that implements the Data Mapper pattern to convert raw data into application objects while keeping concerns cleanly separated.
+
+## Problem
+In a legacy CodeIgniter application with no dependency injection, form handling logic was hard-coded, tightly coupled, and spread across large controllers. Form data structures were difficult to reuse or modify, and there was no clean way to sanitize, clean, or tweak inputs before submission.
+
+## What it does
+This package allows you to define complete form data as objects and apply any number of transformation functions to clean or modify values before submission. It centralizes form data mapping and processing, improving flexibility and maintainability without requiring changes to the underlying framework.
+
 Collection of objects intended to cut down repetition of code when having to re-map arrays of data with another source (DB field's etc.)
 
 E.g:
